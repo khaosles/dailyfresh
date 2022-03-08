@@ -56,7 +56,7 @@
         </div>
         <div class="guest_cart fr">
             <a href="/cart" class="cart_name fl">我的购物车</a>
-            <div class="goods_count fl" id="show_count">1</div>
+            <div class="goods_count fl" id="show_count">{% block cartCount %}0{% endblock cartCount %}</div>
         </div>
     </div>
 {% endblock search_bar %}

@@ -6,12 +6,20 @@
     @date: 2022/3/8  11:34
 '''
 
-
 from django.core.files.storage import Storage
 from fdfs_client.client import Fdfs_client
+from django.conf import settings
 
 class FDFSStorage(Storage):
     '''fdfs文件存储类'''
+
+    # def __init__(self, clinet_conf='./utils/fdfs/client.conf', base_url='http://110.42.145.66:8800/'):
+    #     if clinet_conf is None:
+    #         clinet_conf = './utils/fdfs/client.conf'
+    #     if base_url is None:
+    #         base_url = 'http://110.42.145.66:8800/'
+    #     self.clinet_conf = clinet_conf
+    #     self.base_url = base_url
 
     def _open(self, name, mode='rb'):
         '''打开文件'''
@@ -23,7 +31,7 @@ class FDFSStorage(Storage):
         # content file类对象
 
         # 创建fdfs_client对象
-        client = Fdfs_client('./utils/fdfs/client.conf')
+        client = Fdfs_client(settings.FDFS_CLINET_CONF)
 
         # 上传文件到fdfs中
         res = client.upload_by_buffer(content.read())
@@ -44,7 +52,10 @@ class FDFSStorage(Storage):
 
         return filename
 
-
     def exists(self, name):
         '''django判断文件名是否可用'''
         return False
+
+    def url(self, name):
+        '''Django 返回访问url'''
+        return settings.FDFS_URL + name

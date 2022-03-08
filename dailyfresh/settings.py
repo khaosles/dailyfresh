@@ -181,3 +181,11 @@ LOGIN_URL = '/user/login'
 
 # django文件存储类
 DEFAULT_FILE_STORAGE = 'utils.fdfs.storage.FDFSStorage'
+
+
+# fdfs配置文件路径
+FDFS_CLINET_CONF = './utils/fdfs/client.conf'
+
+
+# nginx ip port
+FDFS_URL = 'http://110.42.145.66:8800/'
