@@ -177,3 +177,7 @@ SESSION_CACHE_ALIAS = 'default'
 
 # 跳转的登录地址
 LOGIN_URL = '/user/login'
+
+
+# django文件存储类
+DEFAULT_FILE_STORAGE = 'utils.fdfs.storage.FDFSStorage'
