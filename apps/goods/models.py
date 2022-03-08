@@ -40,6 +40,9 @@ class GoodsSKU(BaseModel):
     image = models.ImageField(upload_to='goods', verbose_name='商品图片')
     status = models.SmallIntegerField(default=1, choices=status_choices, verbose_name='商品状态')
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         db_table = 'df_goods_sku'
         verbose_name = '商品'
@@ -51,6 +54,9 @@ class Goods(BaseModel):
     name = models.CharField(max_length=50, verbose_name='商品SPU名称')
     # 富文本类型， 带有格式的文本
     detail = HTMLField(blank=True, verbose_name='商品详情')
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         db_table = 'df_goods'
@@ -110,3 +116,4 @@ class IndexPromotionBanner(BaseModel):
         db_table = 'df_index_promotion'
         verbose_name = '主页促销活动'
         verbose_name_plural = verbose_name
+
