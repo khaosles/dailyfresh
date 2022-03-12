@@ -3,23 +3,16 @@
 {% block title %}天天生鲜-商品详情{% endblock title %}
 
 {% block main_content %}
-    <div class="breadcrumb">
-    <a href="#">全部分类</a>
-    <span>></span>
-    <a href="#">新鲜水果</a>
-    <span>></span>
-    <a href="#">商品详情</a>
-</div>
 
     <div class="goods_detail_con clearfix">
-        <div class="goods_detail_pic fl"><img src="../static/images/goods_detail.jpg"></div>
+        <div class="goods_detail_pic fl"><img src="{{ sku.image.url }}"></div>
 
         <div class="goods_detail_list fr">
-            <h3>大兴大棚草莓</h3>
-            <p>草莓浆果柔软多汁，味美爽口，适合速冻保鲜贮藏。草莓速冻后，可以保持原有的色、香、味，既便于贮藏，又便于外销。</p>
+            <h3>{{ sku.name }}</h3>
+            <p>{{ sku.desc }}</p>
             <div class="prize_bar">
-                <span class="show_pirze">¥<em>16.80</em></span>
-                <span class="show_unit">单  位：500g</span>
+                <span class="show_pirze">¥<em>{{ sku.price }}</em></span>
+                <span class="show_unit">单  位：{{ sku.unite }}</span>
             </div>
             <div class="goods_num clearfix">
                 <div class="num_name fl">数 量：</div>
@@ -28,6 +21,16 @@
                     <a href="javascript:;" class="add fr">+</a>
                     <a href="javascript:;" class="minus fr">-</a>
                 </div>
+            </div>
+            <div>
+                <p>其他规格</p>
+            <ul>
+                {% for sameSku in same_spu_skus %}
+                    <li><a href="{% url 'goods:detail' sameSku.id %}">{{ sameSku.name }}</a></li>
+                {% endfor %}
+            </ul>
+
+                
             </div>
             <div class="total">总价：<em>16.80元</em></div>
             <div class="operate_btn">
@@ -38,39 +41,51 @@
     </div>
 
     <div class="main_wrap clearfix">
-    <div class="l_wrap fl clearfix">
-        <div class="new_goods">
-            <h3>新品推荐</h3>
-            <ul>
-                <li>
-                    <a href="#"><img src="../static/images/goods/goods001.jpg"></a>
-                    <h4><a href="#">进口柠檬</a></h4>
-                    <div class="prize">￥3.90</div>
-                </li>
-                <li>
-                    <a href="#"><img src="../static/images/goods/goods002.jpg"></a>
-                    <h4><a href="#">玫瑰香葡萄</a></h4>
-                    <div class="prize">￥16.80</div>
-                </li>
+        <div class="l_wrap fl clearfix">
+            <div class="new_goods">
+                <h3>新品推荐</h3>
+                <ul>
+                    {% for new_sku in new_skus %}
+                        <li>
+                            <a href="{% url 'goods:detail' new_sku.id %}"><img src="{{ new_sku.image.url }}"></a>
+                            <h4><a href="{% url 'goods:detail' new_sku.id %}">{{ new_sku.name }}</a></h4>
+                            <div class="prize">￥{{ new_sku.price }}</div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="r_wrap fr clearfix">
+            <ul class="detail_tab clearfix">
+                <li class="active">商品介绍</li>
+                <li>评论</li>
             </ul>
+
+            <div class="tab_content">
+                <dl>
+                    <dt>商品详情：</dt>
+                    {#                {% autoescape  off %}#}
+                    {#                {% endautoescape %}#}
+                    <dd>{{ sku.goods.detail|safe }}</dd>
+                </dl>
+            </div>
+
+            <div class="tab_content">
+                <dl>
+                    <dt>商品评论：</dt>
+                    {% for order in orders %}
+                    <dd>评论时间:{{ order.update_time }}&ensp;&ensp;用户名:{{ order.order.user.username }}</dd>
+                    <dd>评论内容:{{ order.comment }}</dd>
+                    {% empty %}
+                        <div></div>
+                    {% endfor %}
+                </dl>
+            </div>
+
+
         </div>
     </div>
-
-    <div class="r_wrap fr clearfix">
-        <ul class="detail_tab clearfix">
-            <li class="active">商品介绍</li>
-            <li>评论</li>
-        </ul>
-
-        <div class="tab_content">
-            <dl>
-                <dt>商品详情：</dt>
-                <dd>草莓采摘园位于北京大兴区 庞各庄镇四各庄村 ，每年1月-6月面向北京以及周围城市提供新鲜草莓采摘和精品礼盒装草莓，草莓品种多样丰富，个大香甜。所有草莓均严格按照有机标准培育，不使用任何化肥和农药。草莓在采摘期间免洗可以直接食用。欢迎喜欢草莓的市民前来采摘，也欢迎各大单位选购精品有机草莓礼盒，有机草莓礼盒是亲朋馈赠、福利送礼的最佳选择。 </dd>
-            </dl>
-        </div>
-
-    </div>
-</div>
 {% endblock main_content %}
 
 {% block bottom %}
@@ -78,25 +93,26 @@
 {% endblock bottom %}
 
 {% block bottomfiles %}
-        <script type="text/javascript" src="{% static 'js/jquery-1.12.2.js' %}"></script>
-        <script type="text/javascript">
-            var $add_x = $('#add_cart').offset().top;
-            var $add_y = $('#add_cart').offset().left;
+    <script type="text/javascript" src="{% static 'js/jquery-1.12.2.js' %}"></script>
+    <script type="text/javascript">
+        var $add_x = $('#add_cart').offset().top;
+        var $add_y = $('#add_cart').offset().left;
 
-            var $to_x = $('#show_count').offset().top;
-            var $to_y = $('#show_count').offset().left;
+        var $to_x = $('#show_count').offset().top;
+        var $to_y = $('#show_count').offset().left;
 
-            $(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
-            $('#add_cart').click(function(){
-                $(".add_jump").stop().animate({
-                    'left': $to_y+7,
-                    'top': $to_x+7},
-                    "fast", function() {
-                        $(".add_jump").fadeOut('fast',function(){
-                            $('#show_count').html(2);
-                        });
+        $(".add_jump").css({'left': $add_y + 80, 'top': $add_x + 10, 'display': 'block'})
+        $('#add_cart').click(function () {
+            $(".add_jump").stop().animate({
+                    'left': $to_y + 7,
+                    'top': $to_x + 7
+                },
+                "fast", function () {
+                    $(".add_jump").fadeOut('fast', function () {
+                        $('#show_count').html(2);
+                    });
 
                 });
-            })
-        </script>
-	{% endblock bottomfiles %}
+        })
+    </script>
+{% endblock bottomfiles %}
