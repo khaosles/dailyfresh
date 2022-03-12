@@ -31,7 +31,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,7 +43,9 @@ INSTALLED_APPS = [
     'apps.order',
     'apps.cart',
     'tinymce',
+    'haystack',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -189,3 +190,17 @@ FDFS_CLINET_CONF = './utils/fdfs/client.conf'
 
 # nginx ip port
 FDFS_URL = 'http://110.42.145.66:8800/'
+
+
+# haysatck全文搜索隐藏配置
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        #使用whoosh引擎
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        #索引文件路径
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    }
+}
+
+#当添加、修改、删除数据时，自动生成索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
