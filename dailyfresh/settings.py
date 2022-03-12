@@ -196,11 +196,11 @@ FDFS_URL = 'http://110.42.145.66:8800/'
 HAYSTACK_CONNECTIONS = {
     'default': {
         #使用whoosh引擎
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
         #索引文件路径
         'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
     }
 }
 
-#当添加、修改、删除数据时，自动生成索引
+# 当添加、修改、删除数据时，自动生成索引
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
