@@ -1,5 +1,8 @@
 {# 详情页， 列表页 #}
 {% extends 'base.html' %}
+{% if cart_count is not None %}
+{% block cartCount %}{{ cart_count }}{% endblock cartCount %}
+{% endif %}
 {% block body %}
     <div class="navbar_con">
         <div class="navbar clearfix">
