@@ -24,13 +24,13 @@
             </div>
             <div>
                 <p>其他规格</p>
-            <ul>
-                {% for sameSku in same_spu_skus %}
-                    <li><a href="{% url 'goods:detail' sameSku.id %}">{{ sameSku.name }}</a></li>
-                {% endfor %}
-            </ul>
+                <ul>
+                    {% for sameSku in same_spu_skus %}
+                        <li><a href="{% url 'goods:detail' sameSku.id %}">{{ sameSku.name }}</a></li>
+                    {% endfor %}
+                </ul>
 
-                
+
             </div>
             <div class="total">总价：<em>16.80元</em></div>
             <div class="operate_btn">
@@ -75,8 +75,8 @@
                 <dl>
                     <dt>商品评论：</dt>
                     {% for order in orders %}
-                    <dd>评论时间:{{ order.update_time }}&ensp;&ensp;用户名:{{ order.order.user.username }}</dd>
-                    <dd>评论内容:{{ order.comment }}</dd>
+                        <dd>评论时间:{{ order.update_time }}&ensp;&ensp;用户名:{{ order.order.user.username }}</dd>
+                        <dd>评论内容:{{ order.comment }}</dd>
                     {% empty %}
                         <div></div>
                     {% endfor %}
@@ -93,8 +93,62 @@
 {% endblock bottom %}
 
 {% block bottomfiles %}
-    <script type="text/javascript" src="{% static 'js/jquery-1.12.2.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
     <script type="text/javascript">
+        updataGoodsAmount();
+
+        function updataGoodsAmount() {
+            // 获取商品的单价
+            price = $('.show_pirze').children('em').text();
+            // 获取商品的数量
+            count = $('.num_show').val();
+            // 计算价格
+            price = parseFloat(price);
+            count = parseInt(count);
+            // 总价
+            amount = count * price;
+            // 设置总价
+            $('.total').children('em').text(amount.toFixed(2) + '元');
+        }
+
+        $('.add').click(function () {
+            // 获取商品现有的数目
+            count = $('.num_show').val();
+            // 增加
+            $('.num_show').val(parseInt(count) + 1);
+            // 更新总价
+            updataGoodsAmount();
+        });
+
+        $('.minus').click(function () {
+            // 获取商品现有的数目
+            count = $('.num_show').val();
+            count = parseInt(count) - 1
+            if (count < 1) {
+                count = 1;
+            }
+            // 增加
+            $('.num_show').val(parseInt(count));
+            // 更新总价
+            updataGoodsAmount();
+        });
+
+        // 手动输入
+        $('.num_show').blur(function () {
+             // 获取商品现有的数目
+            count = $(this).val();
+            // 检查num是否合法
+            if (isNaN(count) || count.trim().length==0 || parseInt(count)==0){
+                count = 1;
+            }
+            // alert(parseInt(count));
+            // 设置数目
+            $(this).val(parseInt(count));
+            // 更新
+            updataGoodsAmount();
+        });
+
+
         var $add_x = $('#add_cart').offset().top;
         var $add_y = $('#add_cart').offset().left;
 
