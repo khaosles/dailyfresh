@@ -21,7 +21,7 @@ from django.template import loader, RequestContext
 
 
 # 创建一个Celery对象
-app = Celery('celery_tasks.tasks', broker='redis://:gisio123@110.42.145.66:6300/8')
+app = Celery('celery_tasks.tasks', broker='redis://:*@*:6300/8')
 
 
 @app.task
