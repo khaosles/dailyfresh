@@ -85,10 +85,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dailyfresh',
-        'HOST': '110.42.145.66',
+        'HOST': '*',
         'PORT': 3306,
         'USER': 'root',
-        'PASSWORD': 'gisio123',
+        'PASSWORD': '*',
     }
 }
 
@@ -141,7 +141,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 富文本编辑器配置
 TINYMCE_DEFAULT_CONFIG = {
-    'theme': 'advanced',
+    'theme': 'advanced',https://github.com/khaosles/dailyfresh/blob/master/dailyfresh/settings.py
     'width': 600,
     'height': 400,
 }
@@ -158,17 +158,17 @@ EMAIL_FROM = '天天生鲜<khaosles@163.com>'
 
 
 # SESSION_ENGINE = 'redis_sessions.session'
-# SESSION_REDIS_HOST = '110.42.145.66'
+# SESSION_REDIS_HOST = '*'
 # SESSION_REDIS_PORT = 6300
 # SESSION_REDIS_DB = 2
-# SESSION_REDIS_PASSWORD = 'gisio123'
+# SESSION_REDIS_PASSWORD = '*'
 # SESSION_REDIS_PREFIX = 'session'
 
 # django 配置缓存在redis中
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://:gisio123@110.42.145.66:6300/10',
+        'LOCATION': 'redis://:*@*:6300/10',
     }
 }
 
